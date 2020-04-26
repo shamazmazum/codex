@@ -46,13 +46,11 @@
   (declare (ignore tc a))
   t)
 
-#|
 (define-condition my-error ()
   ((first-slot :accessor first-slot
                :initarg :first-slot
                :documentation "docstring"))
   (:documentation "docstring"))
-|#
 
 (deftype custom-string (val)
   "docstring"
