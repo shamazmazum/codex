@@ -10,6 +10,7 @@ Here's a link to the hyperspec: @cl:spec(defpackage).
 
 @cl:with-package[name="codex-test-system"](
 @cl:doc(function func)
+@cl:doc(function fuuuuuuu)
 @cl:doc(macro mac)
 @cl:doc(generic test-method)
 @cl:doc(method test-method (tc test-class) a)
