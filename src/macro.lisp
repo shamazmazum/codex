@@ -124,13 +124,14 @@ If there is none, codex.error:no-docstring condition is signalled."
                                (let ((*print-case* :downcase))
                                  (princ-to-string list)))))))
 
-(defun write-to-code-node (class obj)
+(defun write-to-code-node (class obj &optional package)
   (make-instance 'code
                  :metadata (make-class-metadata class)
                  :children (list
                             (make-text
                              (with-standard-io-syntax
-                               (let ((*print-case* :downcase))
+                               (let ((*print-case* :downcase)
+                                     (*package* (or package *package*)))
                                  (write-to-string obj)))))))
 
 (defun make-doc-node (classes &rest children)
@@ -148,8 +149,9 @@ If there is none, codex.error:no-docstring condition is signalled."
   "Expand a generic operator node. Called by more specific methods."
   (make-doc-node (list "operator" class-name)
                  (name-node node)
-                 (list-to-code-node "lambda-list"
-                                    (docparser:operator-lambda-list node))
+                 (write-to-code-node "lambda-list"
+                                     (docparser:operator-lambda-list node)
+                                     (symbol-package (docparser:node-name node)))
                  (docstring-node node)))
 
 (defmethod expand-node ((node docparser:function-node))
