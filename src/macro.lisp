@@ -189,24 +189,18 @@ explicitly supported by this method."
   ;; 3. accessor, if available
   ;; 4. initform, if available
   (let* ((left-col-metadata (make-class-metadata "class-struct-slot-option-label-cell"))
-         (header-metadata (make-class-metadata "class-struct-slot-option-header-cell"))
          (symbol-list-metadata (make-class-metadata '("class-struct-slot-option-value-cell"
                                                       "class-struct-slot-option-symbol-list-cell")))
          (row-metadata (make-class-metadata "class-struct-slot-option-row"))
          (rows (append
-                (list (make-row (list (make-cell (list (make-text "Option"))
-                                                 :metadata header-metadata)
-                                      (make-cell (list (make-text "Value"))
-                                                 :metadata header-metadata))
-                                :metadata row-metadata))
-                (list (make-row (list (make-cell (list (make-text "Type:"))
+                (list (make-row (list (make-cell (list (make-text "Type"))
                                                  :metadata left-col-metadata)
                                       (make-cell (list (write-to-code-node
                                                         "class-struct-slot-symbol-list"
                                                         (docparser::struct-slot-type node)))
                                                  :metadata symbol-list-metadata))
                                 :metadata row-metadata))
-                (list (make-row (list (make-cell (list (make-text "Read Only:"))
+                (list (make-row (list (make-cell (list (make-text "Read Only"))
                                                  :metadata left-col-metadata)
                                       (make-cell (list (write-to-code-node
                                                         "class-struct-slot-symbol-list"
@@ -215,7 +209,7 @@ explicitly supported by this method."
                                 :metadata row-metadata))
                 ;; Only include accessor and initform if they are available.
                 (when (docparser::struct-slot-accessor node)
-                  (list (make-row (list (make-cell (list (make-text "Accessor:"))
+                  (list (make-row (list (make-cell (list (make-text "Accessor"))
                                                    :metadata left-col-metadata)
                                         (make-cell (list (write-to-code-node
                                                           "class-struct-slot-symbol-list"
@@ -225,7 +219,7 @@ explicitly supported by this method."
                 (multiple-value-bind (initform initform-exists)
                     (docparser:slot-initform node)
                   (when initform-exists
-                    (list (make-row (list (make-cell (list (make-text "Initform:"))
+                    (list (make-row (list (make-cell (list (make-text "Initform"))
                                                      :metadata left-col-metadata)
                                           (make-cell (list (write-to-code-node
                                                             "class-struct-slot-symbol-list"
@@ -264,24 +258,18 @@ explicitly supported by this method."
   ;; 6. writers, if available
   ;; 7. accessors, if available
   (let* ((left-col-metadata (make-class-metadata "class-struct-slot-option-label-cell"))
-         (header-metadata (make-class-metadata "class-struct-slot-option-header-cell"))
          (symbol-list-metadata (make-class-metadata '("class-struct-slot-option-value-cell"
                                                       "class-struct-slot-option-symbol-list-cell")))
          (row-metadata (make-class-metadata "class-struct-slot-option-row"))
          (rows (append
-                (list (make-row (list (make-cell (list (make-text "Option"))
-                                                 :metadata header-metadata)
-                                      (make-cell (list (make-text "Value"))
-                                                 :metadata header-metadata))
-                                :metadata row-metadata))
-                (list (make-row (list (make-cell (list (make-text "Allocation:"))
+                (list (make-row (list (make-cell (list (make-text "Allocation"))
                                                  :metadata left-col-metadata)
                                       (make-cell (list (make-text
                                                         (docparser:render-humanize
                                                          (docparser:slot-allocation node))))
                                                  :metadata symbol-list-metadata))
                                 :metadata row-metadata))
-                (list (make-row (list (make-cell (list (make-text "Type:"))
+                (list (make-row (list (make-cell (list (make-text "Type"))
                                                  :metadata left-col-metadata)
                                       (make-cell (list (write-to-code-node
                                                         "class-struct-slot-symbol-list"
@@ -291,7 +279,7 @@ explicitly supported by this method."
                 ;; Only include initarg, initform, readers, writers, and
                 ;; accessors if they are available.
                 (when (docparser:slot-initarg node)
-                  (list (make-row (list (make-cell (list (make-text "Initarg:"))
+                  (list (make-row (list (make-cell (list (make-text "Initarg"))
                                                    :metadata left-col-metadata)
                                         (make-cell (list (write-to-code-node
                                                           "class-struct-slot-symbol-list"
@@ -299,7 +287,7 @@ explicitly supported by this method."
                                                    :metadata symbol-list-metadata))
                                   :metadata row-metadata)))
                 (when (second (multiple-value-list (docparser:slot-initform node)))
-                  (list (make-row (list (make-cell (list (make-text "Initform:"))
+                  (list (make-row (list (make-cell (list (make-text "Initform"))
                                                    :metadata left-col-metadata)
                                         (make-cell (list (write-to-code-node
                                                           "class-struct-slot-symbol-list"
@@ -307,7 +295,7 @@ explicitly supported by this method."
                                                    :metadata symbol-list-metadata))
                                   :metadata row-metadata)))
                 (when (docparser:slot-readers node)
-                  (list (make-row (list (make-cell (list (make-text "Readers:"))
+                  (list (make-row (list (make-cell (list (make-text "Readers"))
                                                    :metadata left-col-metadata)
                                         (make-cell (list (list-to-code-node
                                                           "class-struct-slot-symbol-list"
@@ -315,7 +303,7 @@ explicitly supported by this method."
                                                    :metadata symbol-list-metadata))
                                   :metadata row-metadata)))
                 (when (docparser:slot-writers node)
-                  (list (make-row (list (make-cell (list (make-text "Writers:"))
+                  (list (make-row (list (make-cell (list (make-text "Writers"))
                                                    :metadata left-col-metadata)
                                         (make-cell (list (list-to-code-node
                                                           "class-struct-slot-symbol-list"
@@ -323,7 +311,7 @@ explicitly supported by this method."
                                                    :metadata symbol-list-metadata))
                                   :metadata row-metadata)))
                 (when (docparser:slot-accessors node)
-                  (list (make-row (list (make-cell (list (make-text "Accessors:"))
+                  (list (make-row (list (make-cell (list (make-text "Accessors"))
                                                    :metadata left-col-metadata)
                                         (make-cell (list (list-to-code-node
                                                           "class-struct-slot-symbol-list"
@@ -354,17 +342,10 @@ explicitly supported by this method."
                          (name-node node)))
         (middle (let* ((left-col-metadata (make-class-metadata
                                            "class-struct-slot-option-label-cell"))
-                       (header-metadata (make-class-metadata
-                                         "class-struct-slot-option-header-cell"))
                        (symbol-list-metadata (make-class-metadata
                                               '("class-struct-slot-option-value-cell"
                                                 "class-struct-slot-option-symbol-list-cell")))
                        (row-metadata (make-class-metadata "class-struct-slot-option-row"))
-                       (header-row (list (make-row (list (make-cell (list (make-text "Option"))
-                                                                    :metadata header-metadata)
-                                                         (make-cell (list (make-text "Value"))
-                                                                    :metadata header-metadata))
-                                                   :metadata row-metadata)))
                        (rows (if (typep node 'docparser:class-node)
                                  ;; For classes, they are, in order
                                  ;;
@@ -373,7 +354,7 @@ explicitly supported by this method."
                                  ;; 3. default-initargs, if possible
                                  (append
                                   (list (make-row
-                                         (list (make-cell (list (make-text "Superclasses:"))
+                                         (list (make-cell (list (make-text "Superclasses"))
                                                           :metadata left-col-metadata)
                                                (make-cell
                                                 (list
@@ -385,7 +366,7 @@ explicitly supported by this method."
                                          :metadata row-metadata))
                                   (when (slot-exists-and-bound-p node 'docparser::metaclass)
                                     (list (make-row
-                                           (list (make-cell (list (make-text "Metaclass:"))
+                                           (list (make-cell (list (make-text "Metaclass"))
                                                             :metadata left-col-metadata)
                                                  (make-cell
                                                   (list (write-to-code-node
@@ -396,7 +377,7 @@ explicitly supported by this method."
                                   (when (slot-exists-and-bound-p node 'docparser::default-initargs)
                                     (list (make-row
                                            (list (make-cell
-                                                  (list (make-text "Default Initargs:"))
+                                                  (list (make-text "Default Initargs"))
                                                   :metadata left-col-metadata)
                                                  (make-cell
                                                   (list (write-to-code-node
@@ -428,7 +409,7 @@ explicitly supported by this method."
                                                 docparser::initial-offset))
                                    (append
                                     (list (make-row
-                                           (list (make-cell (list (make-text "Constructor:"))
+                                           (list (make-cell (list (make-text "Constructor"))
                                                             :metadata left-col-metadata)
                                                  (make-cell
                                                   (list
@@ -438,7 +419,7 @@ explicitly supported by this method."
                                                   :metadata symbol-list-metadata))
                                            :metadata row-metadata))
                                     (list (make-row
-                                           (list (make-cell (list (make-text "Predicate:"))
+                                           (list (make-cell (list (make-text "Predicate"))
                                                             :metadata left-col-metadata)
                                                  (make-cell
                                                   (list
@@ -448,7 +429,7 @@ explicitly supported by this method."
                                                   :metadata symbol-list-metadata))
                                            :metadata row-metadata))
                                     (list (make-row
-                                           (list (make-cell (list (make-text "Copier:"))
+                                           (list (make-cell (list (make-text "Copier"))
                                                             :metadata left-col-metadata)
                                                  (make-cell
                                                   (list
@@ -459,7 +440,7 @@ explicitly supported by this method."
                                            :metadata row-metadata))
                                     (when (docparser::struct-node-print-function node)
                                       (list (make-row
-                                             (list (make-cell (list (make-text "Print Function:"))
+                                             (list (make-cell (list (make-text "Print Function"))
                                                               :metadata left-col-metadata)
                                                    (make-cell
                                                     (list
@@ -471,7 +452,7 @@ explicitly supported by this method."
                                              :metadata row-metadata)))
                                     (when (docparser::struct-node-print-object node)
                                       (list (make-row
-                                             (list (make-cell (list (make-text "Print Object:"))
+                                             (list (make-cell (list (make-text "Print Object"))
                                                               :metadata left-col-metadata)
                                                    (make-cell
                                                     (list
@@ -482,7 +463,7 @@ explicitly supported by this method."
                                              :metadata row-metadata)))
                                     (when (docparser::struct-node-type node)
                                       (list (make-row
-                                             (list (make-cell (list (make-text "Type:"))
+                                             (list (make-cell (list (make-text "Type"))
                                                               :metadata left-col-metadata)
                                                    (make-cell
                                                     (list
@@ -492,7 +473,7 @@ explicitly supported by this method."
                                                     :metadata symbol-list-metadata))
                                              :metadata row-metadata)
                                             (make-row
-                                             (list (make-cell (list (make-text "Named:"))
+                                             (list (make-cell (list (make-text "Named"))
                                                               :metadata left-col-metadata)
                                                    (make-cell
                                                     (list
@@ -502,7 +483,7 @@ explicitly supported by this method."
                                                     :metadata symbol-list-metadata))
                                              :metadata row-metadata)
                                             (make-row
-                                             (list (make-cell (list (make-text "Initial Offset:"))
+                                             (list (make-cell (list (make-text "Initial Offset"))
                                                               :metadata left-col-metadata)
                                                    (make-cell
                                                     (list
@@ -519,7 +500,7 @@ explicitly supported by this method."
                                          :children
                                          (list
                                           (common-doc:make-table
-                                           (cons header-row rows)
+                                           rows
                                            :metadata
                                            (make-class-metadata
                                             "class-struct-slot-option-table"))))))))
@@ -581,16 +562,10 @@ create an error message."
   ;; 1. type
   ;; 2. reader
   (let* ((left-col-metadata (make-class-metadata "class-struct-slot-option-label-cell"))
-         (header-metadata (make-class-metadata "class-struct-slot-option-header-cell"))
          (symbol-list-metadata (make-class-metadata '("class-struct-slot-option-value-cell"
                                                       "class-struct-slot-option-symbol-list-cell")))
          (row-metadata (make-class-metadata "class-struct-slot-option-row"))
          (rows (append
-                (list (make-row (list (make-cell (list (make-text "Option"))
-                                                 :metadata header-metadata)
-                                      (make-cell (list (make-text "Value"))
-                                                 :metadata header-metadata))
-                                :metadata row-metadata))
                 (list (make-row (list (make-cell (list (make-text "Type"))
                                                  :metadata left-col-metadata)
                                       (make-cell (list (write-to-code-node
