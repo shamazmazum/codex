@@ -100,7 +100,6 @@ package."
 (defun parse-output-format (plist)
   "Create an instance of an output-format class from a plist."
   (let* ((format-name (getf plist :type))
-         (args (alexandria:remove-from-plist plist :type))
          (class-name (cond
                        ((eq format-name :single-html)
                         'single-html)
