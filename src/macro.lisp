@@ -570,27 +570,81 @@ create an error message."
   (make-text (format nil "Unsupported node type ~A." (type-of node))
              :metadata (make-class-metadata (list "error" "unsupported-node-error"))))
 
+(defmethod expand-node ((node docparser:defconstructor-node))
+  "Expand a structure definition node."
+  (expand-record-node "defconstructor" node))
+
+(defmethod expand-node ((node docparser:defconstructor-slot-node))
+  "Expand a structure slot node. This doesn't have any docstrings."
+  ;; The options will be in the following order:
+  ;;
+  ;; 1. type
+  ;; 2. reader
+  (let* ((left-col-metadata (make-class-metadata "class-struct-slot-option-label-cell"))
+         (header-metadata (make-class-metadata "class-struct-slot-option-header-cell"))
+         (symbol-list-metadata (make-class-metadata '("class-struct-slot-option-value-cell"
+                                                      "class-struct-slot-option-symbol-list-cell")))
+         (row-metadata (make-class-metadata "class-struct-slot-option-row"))
+         (rows (append
+                (list (make-row (list (make-cell (list (make-text "Option"))
+                                                 :metadata header-metadata)
+                                      (make-cell (list (make-text "Value"))
+                                                 :metadata header-metadata))
+                                :metadata row-metadata))
+                (list (make-row (list (make-cell (list (make-text "Type"))
+                                                 :metadata left-col-metadata)
+                                      (make-cell (list (write-to-code-node
+                                                        "class-struct-slot-symbol-list"
+                                                        (docparser::defconstructor-slot-type
+                                                            node)))
+                                                 :metadata symbol-list-metadata))
+                                :metadata row-metadata))
+                (list (make-row (list (make-cell (list (make-text "Reader"))
+                                                 :metadata left-col-metadata)
+                                      (make-cell (list (write-to-code-node
+                                                        "class-struct-slot-symbol-list"
+                                                        (docparser::defconstructor-slot-reader node)))
+                                                 :metadata symbol-list-metadata))
+                                :metadata row-metadata)))))
+    (make-instance 'list-item
+                   :metadata (make-class-metadata (list "slot" "structure-slot"))
+                   :children
+                   (append
+                    (list (name-node node))
+                    (when (< 1 (list-length rows))
+                      (list (make-instance 'content-node
+                                           :metadata
+                                           (make-class-metadata "class-struct-slot-option-node")
+                                           :children
+                                           (list
+                                            (common-doc:make-table
+                                             rows
+                                             :metadata
+                                             (make-class-metadata
+                                              "class-struct-slot-option-table"))))))))))
+
 ;;; Macroexpansions
 
 (defparameter +type-name-to-class-map+
-  (list (cons "function"      'docparser:function-node)
-        (cons "setf-function" 'docparser:function-node)
-        (cons "macro"         'docparser:macro-node)
-        (cons "generic"       'docparser:generic-function-node)
-        (cons "setf-generic"  'docparser:generic-function-node)
-        (cons "method"        'docparser:method-node)
-        (cons "setf-method"   'docparser:method-node)
-        (cons "variable"      'docparser:variable-node)
-        (cons "struct"        'docparser:struct-node)
-        (cons "class"         'docparser:class-node)
-        (cons "condition"     'docparser:condition-node)
-        (cons "type"          'docparser:type-node)
-        (cons "cfunction"     'docparser:cffi-function)
-        (cons "ctype"         'docparser:cffi-type)
-        (cons "cstruct"       'docparser:cffi-struct)
-        (cons "cunion"        'docparser:cffi-union)
-        (cons "cenum"         'docparser:cffi-enum)
-        (cons "cbitfield"     'docparser:cffi-bitfield))
+  (list (cons "function"       'docparser:function-node)
+        (cons "setf-function"  'docparser:function-node)
+        (cons "macro"          'docparser:macro-node)
+        (cons "generic"        'docparser:generic-function-node)
+        (cons "setf-generic"   'docparser:generic-function-node)
+        (cons "method"         'docparser:method-node)
+        (cons "setf-method"    'docparser:method-node)
+        (cons "variable"       'docparser:variable-node)
+        (cons "struct"         'docparser:struct-node)
+        (cons "class"          'docparser:class-node)
+        (cons "condition"      'docparser:condition-node)
+        (cons "type"           'docparser:type-node)
+        (cons "cfunction"      'docparser:cffi-function)
+        (cons "ctype"          'docparser:cffi-type)
+        (cons "cstruct"        'docparser:cffi-struct)
+        (cons "cunion"         'docparser:cffi-union)
+        (cons "cenum"          'docparser:cffi-enum)
+        (cons "cbitfield"      'docparser:cffi-bitfield)
+        (cons "defconstructor" 'docparser:defconstructor-node))
   "Associate the string names of Docparser classes to the corresponding
 docparser class names.")
 
