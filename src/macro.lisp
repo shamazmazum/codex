@@ -541,8 +541,9 @@ explicitly supported by this."
   "Expand a type node."
   (make-doc-node (list "type")
                  (name-node node)
-                 (list-to-code-node "type-def"
-                                    (docparser:operator-lambda-list node))
+                 (write-to-code-node "type-def"
+                                     (print (docparser:operator-lambda-list node))
+                                     (symbol-package (docparser:node-name node)))
                  (docstring-node node)))
 
 (defmethod expand-node ((node t))
