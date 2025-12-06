@@ -542,7 +542,7 @@ explicitly supported by this."
   (make-doc-node (list "type")
                  (name-node node)
                  (write-to-code-node "type-def"
-                                     (print (docparser:operator-lambda-list node))
+                                     (docparser:operator-lambda-list node)
                                      (symbol-package (docparser:node-name node)))
                  (docstring-node node)))
 
